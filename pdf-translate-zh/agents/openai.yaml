@@ -1,0 +1,4 @@
+interface:
+  display_name: "PDF 全文中文翻译"
+  short_description: "将 PDF 全文翻译为中文 Word，并重建版式与逐页质检"
+  default_prompt: "Use $pdf-translate-zh to translate this PDF fully into Chinese and deliver a visually verified DOCX."
