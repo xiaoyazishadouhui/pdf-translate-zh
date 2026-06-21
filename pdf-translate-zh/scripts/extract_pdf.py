@@ -5,7 +5,11 @@ import argparse
 import json
 from pathlib import Path
 
-from pypdf import PdfReader
+PYPDF_IMPORT_ERROR = None
+try:
+    from pypdf import PdfReader
+except ModuleNotFoundError as exc:
+    PYPDF_IMPORT_ERROR = exc
 
 
 def main():
@@ -19,6 +23,11 @@ def main():
         help="Pages below this extracted character count are flagged for OCR",
     )
     args = parser.parse_args()
+    if PYPDF_IMPORT_ERROR is not None:
+        parser.error(
+            "missing dependency 'pypdf'; use the bundled workspace Python "
+            "or install pypdf in the selected environment"
+        )
 
     source = Path(args.input_pdf).expanduser().resolve()
     out = Path(args.out).expanduser().resolve()

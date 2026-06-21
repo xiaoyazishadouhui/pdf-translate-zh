@@ -32,12 +32,16 @@ import argparse
 import json
 from pathlib import Path
 
-from docx import Document
-from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml import OxmlElement
-from docx.oxml.ns import qn
-from docx.shared import Cm, Pt, RGBColor
+DOCX_IMPORT_ERROR = None
+try:
+    from docx import Document
+    from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.shared import Cm, Pt, RGBColor
+except ModuleNotFoundError as exc:
+    DOCX_IMPORT_ERROR = exc
 
 BLUE = "1769AA"
 LIGHT_BLUE = "E8F1F8"
@@ -166,6 +170,11 @@ def main():
     parser.add_argument("translation_json")
     parser.add_argument("output_docx")
     args = parser.parse_args()
+    if DOCX_IMPORT_ERROR is not None:
+        parser.error(
+            "missing dependency 'python-docx'; use the bundled workspace Python "
+            "or install python-docx in the selected environment"
+        )
 
     source = Path(args.translation_json)
     output = Path(args.output_docx)

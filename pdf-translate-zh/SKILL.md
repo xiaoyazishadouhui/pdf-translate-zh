@@ -11,6 +11,13 @@ Produce a complete Chinese translation, not a summary. Deliver a visually verifi
 
 Use the `documents` skill for DOCX design, rendering, and visual QA. Read its instructions before creating the final document.
 
+## Python Runtime
+
+- Resolve the bundled workspace dependencies before running the helper scripts.
+- Prefer the bundled Python executable because it includes `pypdf` and `python-docx`.
+- Before starting a long job, run both scripts with `--help` using the selected Python executable.
+- If a custom Python is required, verify `import pypdf, docx` first. Do not install packages silently.
+
 ## Core Operating Principle
 
 Treat translation as a controlled quality loop, not a one-pass pipeline:
@@ -37,7 +44,7 @@ Read `references/execution-loop.md` and `references/quality-loop.md` before tran
    - Define the deliverable map before writing: one translation per source, one integrated guide, or both.
    - Use bundled workspace `pdfinfo` when available.
    - Render representative source pages to understand layout. Do not use contact sheets as a substitute for final page-by-page QA.
-   - Run `scripts/extract_pdf.py INPUT --out WORKDIR`.
+   - Run `PYTHON scripts/extract_pdf.py INPUT --out WORKDIR` with the verified Python runtime.
    - If many pages have little extractable text, treat them as scans and OCR before translation.
    - Record file count, page count, source language, document type, extraction quality, tables, figures, links, and likely applicability.
    - Create or update the execution state record defined in `references/execution-loop.md`.
@@ -96,7 +103,7 @@ Read `references/execution-loop.md` and `references/quality-loop.md` before tran
 
 7. Build the DOCX.
    - Prepare JSON in the schema documented by `scripts/build_docx.py --help`.
-   - Run `scripts/build_docx.py TRANSLATION_JSON OUTPUT.docx`.
+   - Run `PYTHON scripts/build_docx.py TRANSLATION_JSON OUTPUT.docx` with the same verified Python runtime.
    - Use A4 for source PDFs that are A4; otherwise preserve the source paper size when practical.
    - Use real Word headings, lists, tables, headers, footers, and page numbers.
    - Match an approved sample when the user supplies one. Treat its hierarchy, typography, spacing, table density, and editorial polish as acceptance criteria.
